@@ -1,27 +1,29 @@
 version: "3.5"
 services:
-  # zookeeper:
-  #   image: confluentinc/cp-zookeeper:latest
-  #   restart: always
-  #   environment:
-  #     ZOOKEEPER_CLIENT_PORT: 2181
-  #     ZOOKEEPER_TICK_TIME: 2000
-  #   volumes:
-  #     - ./zk-single-kafka-single/zoo1/data:/data
-  #     - ./zk-single-kafka-single/zoo1/datalog:/datalog
+  zookeeper:
+    image: confluentinc/cp-zookeeper:latest
+    restart: always
+    container_name: zookeeper
+    environment:
+      ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
+    volumes:
+      - ./zk-single-kafka-single/zookeeper/data:/data
+      - ./zk-single-kafka-single/zookeeper/datalog:/datalog
 
-  # kafka:
-  #   image: confluentinc/cp-kafka:latest
-  #   restart: always
-  #   depends_on:
-  #     - zookeeper
-  #   environment:
-  #     KAFKA_BROKER_ID: 1
-  #     KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
-  #     KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
-  #     KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
-  #   volumes:
-  #     - ./zk-single-kafka-single/kafka1/data:/var/lib/kafka/data
+  kafka:
+    image: confluentinc/cp-kafka:latest
+    restart: always
+    container_name: kafka
+    depends_on:
+      - zookeeper
+    environment:
+      KAFKA_BROKER_ID: 1
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+      KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - ./zk-single-kafka-single/kafka/data:/var/lib/kafka/data
 
   redis:
     image: redis:alpine
