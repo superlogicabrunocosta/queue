@@ -20,6 +20,12 @@ services:
       - 20000:20000
     links:
       - rabbitmq:rabbitmq
+      
+  redis:
+    image: redis:alpine
+    restart: always
+    expose:
+      - 6379
 
 networks:
   default:
